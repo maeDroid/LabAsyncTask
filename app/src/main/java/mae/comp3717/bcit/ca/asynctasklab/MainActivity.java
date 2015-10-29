@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AsyncTaskRunner runner = new AsyncTaskRunner();
                 runner.execute();
+                // can simply replace above two lines with:
+                //    new AsyncTaskRunner().execute();
             }
         });
     }
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             String resp = "";
+            final String[] list = {"one", "two", "three", "four", "five", "six"};
 
             try {
                 for (int i = 0; i < 10; i++) {
@@ -83,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
                             Random rnd = new Random();
                             int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
                             bg.setBackgroundColor(color);
+
+                            for (int j = 0; j < list.length; j++) {
+                                Toast.makeText(getApplicationContext(), list[j], Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                 }
@@ -98,19 +105,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         /*
-         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
-         */
-        @Override
-        protected void onPostExecute(String result) {
-            // execution of result of Long time consuming operation
-        }
-
-        /*
          * @see android.os.AsyncTask#onPreExecute()
          */
         @Override
         protected void onPreExecute() {
             // Things to be done before execution of long running operation.
+            // Toast.makeText(getApplicationContext(), "not even started", Toast.LENGTH_SHORT).show();
         }
 
         /*
@@ -120,6 +120,16 @@ public class MainActivity extends AppCompatActivity {
         protected void onProgressUpdate(String... text) {
             // Things to be done while execution of long running operation is in
             // progress.
+            // Toast.makeText(getApplicationContext(), "working hard", Toast.LENGTH_SHORT).show();
+        }
+
+        /*
+        * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+        */
+        @Override
+        protected void onPostExecute(String result) {
+            // execution of result of Long time consuming operation
+            Toast.makeText(getApplicationContext(), "all done", Toast.LENGTH_SHORT).show();
         }
 
     }
